@@ -1,0 +1,43 @@
+name: Yarn Code Quality Build
+description: A composite action to build and execute code quality steps
+
+# Inputs
+inputs:
+  maven_settings_file: 
+    description: 'Maven Settings File'
+    default: '/home/ec2-user/maven/.m2/settings.xml'
+  branch_name: 
+    description: "Current Branch"
+    required: true
+    default: "main"
+
+runs:
+  using: "composite" 
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Maven Build
+      if: inputs.branch_name == 'main' || inputs.branch_name == 'master'
+      shell: bash
+      run: |
+          mvn clean install \
+            -s ${{inputs.maven_settings_file}} \
+            --batch-mode \
+            -e \
+            -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
+            -PcodeQuality
+
+    - name: Maven Build -- Feature Branch
+      if: inputs.branch_name != 'main' && inputs.branch_name != 'master'
+      shell: bash
+      run: |
+          java --version
+          mvn clean install \
+            -s ${{inputs.maven_settings_file}} \
+            --batch-mode \
+            -e \
+            -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
+            -Denforcer.skip=true \
+            -PcodeQuality
+
