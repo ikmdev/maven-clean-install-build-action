@@ -21,7 +21,7 @@ runs:
       if: inputs.branch_name == 'main' || inputs.branch_name == 'master'
       shell: bash
       run: |
-          mvn clean install \
+          ./mvnw clean install \
             -s ${{inputs.maven_settings_file}} \
             --batch-mode \
             -e \
@@ -32,8 +32,7 @@ runs:
       if: inputs.branch_name != 'main' && inputs.branch_name != 'master'
       shell: bash
       run: |
-          java --version
-          mvn clean install \
+          ./mvnw clean install \
             -s ${{inputs.maven_settings_file}} \
             --batch-mode \
             -e \
