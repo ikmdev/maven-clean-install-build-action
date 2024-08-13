@@ -21,8 +21,9 @@ runs:
       if: inputs.branch_name == 'main' || inputs.branch_name == 'master'
       shell: bash
       run: |
-          sudo -u ec2-user bash -c
-          'mvn clean install \
+          sudo -u ec2-user bash -c \
+          'mvn --version \
+           mvn clean install \
             -s ${{inputs.maven_settings_file}} \
             --batch-mode \
             -e \
@@ -33,7 +34,7 @@ runs:
       if: inputs.branch_name != 'main' && inputs.branch_name != 'master'
       shell: bash
       run: |
-          sudo -u ec2-user bash -c
+          sudo -u ec2-user bash -c \
           'mvn clean install \
             -s ${{inputs.maven_settings_file}} \
             --batch-mode \
