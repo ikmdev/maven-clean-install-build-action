@@ -1,34 +1,28 @@
 # Title
 
-|| Description about the Project ||
+This runs standard maven build installs with standard flags used by the IKMDev team.
 
-## Getting Started
+## How to Use
 
-Required for running this:
+Create a build in the `.github/workflows` folder, as described in the 
+[GitHub Documentation](https://docs.github.com/en/actions/writing-workflows/quickstart).  Add the following code, 
+or something like it:
 
-1. Download and install Open JDK Java 19
+```yaml
+env:
+  MAVEN_SETTING: '/home/ec2-user/maven/.m2/settings.xml'
+  BRANCH_NAME: ${{github.ref_name}}
 
-## Building and Running
-
-Follow the steps below to build and run Komet on your local machine:
-
-1. Clone the repository from GitHub to your local machine
-
-2. Change local directory to cloned repo location
-
-3. Enter the following command to build the application:
-
-
-Unix/Linux/OSX:
-
-```bash
-./mvnw clean install
-```
-
-Windows:
-
-```bash
-./mvnw.cmd clean install
+jobs:
+  build-job:
+    name: Build Job
+    runs-on: self-hosted
+    if: github.repository_owner == 'ikmdev'
+    steps:
+          - name: Build IKMDEV Code
+            uses: ikmdev/ikmdev-build-action@main
+            with:
+              branch_name: ${{env.BRANCH_NAME}}
 ```
 
 ## Issues and Contributions
