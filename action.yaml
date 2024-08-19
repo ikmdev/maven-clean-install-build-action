@@ -51,7 +51,7 @@ runs:
         key: ${{ runner.os }}-sonar
         restore-keys: ${{ runner.os }}-sonar
 
-    - name: Build and analyze
+    - name: Analyze Code
       if: github.repository == '${inputs.organization_name}/${inputs.repository_name}'
       shell: bash
       env:
