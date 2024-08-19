@@ -14,6 +14,13 @@ runs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
+    - name: Cache Maven packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+
     - name: Maven Build
       if: inputs.branch_name == 'main' || inputs.branch_name == 'master'
       shell: bash
