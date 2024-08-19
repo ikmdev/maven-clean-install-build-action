@@ -3,10 +3,19 @@ description: A composite action to ensure that code builds correctly
 
 # Inputs
 inputs:
+  organization_name:
+    description: "Current Organization Name"
+    required: true
+  repository_name:
+    description: "Current Repository Name"
+    required: true
   branch_name: 
-    description: "Current Branch"
+    description: "Current Branch Name"
     required: true
     default: "main"
+  sonarqube_project_key:
+    description: "SonarQube Project Key"
+    required: true
 
 runs:
   using: "composite" 
@@ -35,3 +44,11 @@ runs:
             -Denforcer.skip=true \
             -PcodeQuality
 
+    - name: Build and analyze
+      if: github.repository == '${inputs.organization_name}/${inputs.repository_name}'
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: |
+        mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${sonarqube_project_key}
