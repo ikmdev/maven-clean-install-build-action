@@ -44,6 +44,13 @@ runs:
             -Denforcer.skip=true \
             -PcodeQuality
 
+    - name: Cache SonarCloud packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: ${{ runner.os }}-sonar
+
     - name: Build and analyze
       if: github.repository == '${inputs.organization_name}/${inputs.repository_name}'
       shell: bash
