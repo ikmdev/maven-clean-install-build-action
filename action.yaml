@@ -1,5 +1,5 @@
-name: Yarn Code Quality Build
-description: A composite action to build and execute code quality steps
+name: Maven Clean Install Action
+description: A composite action to ensure that code builds correctly
 
 # Inputs
 inputs:
