@@ -25,7 +25,7 @@ runs:
       if: inputs.branch_name == 'main' || inputs.branch_name == 'master'
       shell: bash
       run: |
-          ./mvnw clean install -U \
+          ./mvnw clean install -U -Dmaven.build.cache.enabled=false \
             --batch-mode \
             -e \
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
@@ -35,7 +35,7 @@ runs:
       if: inputs.branch_name != 'main' && inputs.branch_name != 'master'
       shell: bash
       run: |
-          ./mvnw clean install -U \
+          ./mvnw clean install -U -Dmaven.build.cache.enabled=false \
             --batch-mode \
             -e \
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
