@@ -25,9 +25,6 @@ inputs:
   sonarcloud_coverage_jacoco_xmlReportPaths:
        description: "Jacoco reports path
        required: true
-  sonarcloud_projectKey:
-       description: "Sonar project key"
-       required: true  
   sonarcloud_java_binaries:
        description: "Java binaries folder"
        required: true         
