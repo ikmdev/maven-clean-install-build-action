@@ -48,10 +48,10 @@ runs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ 'https://sonarcloud.io/' }}
           SONAR_ORGANIZATION: ${{ 'ikmdev' }}  
-          run: mvnw verify sonar:sonar 
-              -Dsonar.organization=${{ github.repository_owner }}
-              -Dsonar.sources=src/main/java 
-              -Dsonar.projectKey=${{ github.repository_owner }}_${{ github.event.repository.name }} 
-              -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-              -Dsonar.java.binaries=target/classes
-              -Dsonar.tests=src/test/java
+        run: ./mvnw verify sonar:sonar 
+             -Dsonar.organization=${{ github.repository_owner }}
+             -Dsonar.sources=src/main/java 
+             -Dsonar.projectKey=${{ githubrepository_owner }}_${{ github.event.repository.name }} 
+             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+             -Dsonar.java.binaries=target/classes
+             -Dsonar.tests=src/test/java
