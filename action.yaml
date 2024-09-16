@@ -42,13 +42,14 @@ runs:
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
             -Denforcer.skip=true \
             -PcodeQuality
-
+            
     - name: SonarCloud Build and analyze
-        env:
+      shell: bash 
+      env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ 'https://sonarcloud.io/' }}
           SONAR_ORGANIZATION: ${{ 'ikmdev' }}  
-        run: ./mvnw verify sonar:sonar 
+      run: ./mvnw verify sonar:sonar 
              -Dsonar.organization=${{ github.repository_owner }}
              -Dsonar.sources=src/main/java 
              -Dsonar.projectKey=${{ githubrepository_owner }}_${{ github.event.repository.name }} 
