@@ -50,7 +50,7 @@ runs:
           SONAR_HOST_URL: ${{ 'https://sonarcloud.io/' }}
           SONAR_ORGANIZATION: ${{ 'ikmdev' }}  
       run: | 
-          ./mvnw verify sonar:sonar \
+          ./mvn verify sonar:sonar \
             --batch-mode \
             -Dsonar.organization=${{ github.repository_owner }} \
             -Dsonar.sources=src/main/java \
