@@ -69,16 +69,16 @@ runs:
     - name: SonarCloud Build and analyze
       shell: bash 
       env:
-          SONAR_TOKEN: ${{ sonarcloud_token }}
-          SONAR_HOST_URL: ${{ sonarcloud_host_url }}
+          SONAR_TOKEN: ${{ inputs.sonarcloud_token }}
+          SONAR_HOST_URL: ${{ inputs.sonarcloud_host_url }}
           SONAR_ORGANIZATION: ${{ 'ikmdev' }}  
       run: | 
           ./mvnw verify sonar:sonar \
             --batch-mode \
-            -Dsonar.organization=${{ sonarcloud_organization }} \
-            -Dsonar.sources=${{ sonarcloud_sources }} \
-            -Dsonar.projectKey=${{ sonarcloud_projectKey }} \
-            -Dsonar.coverage.jacoco.xmlReportPaths=${{ sonarcloud_coverage_jacoco_xmlReportPaths }} \
-            -Dsonar.java.binaries=${{ sonarcloud_java_binaries }} \
-            -Dsonar.tests=${{ sonarcloud_tests }}
+            -Dsonar.organization=${{ inputs.sonarcloud_organization }} \
+            -Dsonar.sources=${{ inputs.sonarcloud_sources }} \
+            -Dsonar.projectKey=${{ inputs.sonarcloud_projectKey }} \
+            -Dsonar.coverage.jacoco.xmlReportPaths=${{ inputs.sonarcloud_coverage_jacoco_xmlReportPaths }} \
+            -Dsonar.java.binaries=${{ inputs.sonarcloud_java_binaries }} \
+            -Dsonar.tests=${{ inputs.sonarcloud_tests }}
 
