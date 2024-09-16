@@ -7,7 +7,33 @@ inputs:
     description: "Current Branch"
     required: true
     default: "main"
-
+  sonarcloud_token:
+       description: "Token For Sonarcloud"
+       required: true
+  sonarcloud_host_url:     
+       description: "Sonarcloud Host URL"
+       required: true
+  sonarcloud_organization:
+       description: "Organization Name on Sonarcloud "
+       required: true
+  sonarcloud_sources:
+       description: "source folder"
+       required: true   
+  sonarcloud_projectKey:
+       description: "Sonar project key"
+       required: true
+  sonarcloud_coverage_jacoco_xmlReportPaths:
+       description: "Jacoco reports path
+       required: true
+  sonarcloud_projectKey:
+       description: "Sonar project key"
+       required: true  
+  sonarcloud_java_binaries:
+       description: "Java binaries folder"
+       required: true         
+  sonarcloud_tests:
+       description: "Java test folder"
+       required: true                
 runs:
   using: "composite" 
   steps:
@@ -46,16 +72,16 @@ runs:
     - name: SonarCloud Build and analyze
       shell: bash 
       env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ 'https://sonarcloud.io/' }}
+          SONAR_TOKEN: ${{ sonarcloud_token }}
+          SONAR_HOST_URL: ${{ sonarcloud_host_url }}
           SONAR_ORGANIZATION: ${{ 'ikmdev' }}  
       run: | 
           ./mvnw verify sonar:sonar \
             --batch-mode \
-            -Dsonar.organization=${{ github.repository_owner }} \
-            -Dsonar.sources=src/main/java \
-            -Dsonar.projectKey=${{ githubrepository_owner }}_${{ github.event.repository.name }} \
-            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
-            -Dsonar.java.binaries=target/classes \
-            -Dsonar.tests=src/test/java
+            -Dsonar.organization=${{ sonarcloud_organization }} \
+            -Dsonar.sources=${{ sonarcloud_sources }} \
+            -Dsonar.projectKey=${{ sonarcloud_projectKey }} \
+            -Dsonar.coverage.jacoco.xmlReportPaths=${{ sonarcloud_coverage_jacoco_xmlReportPaths }} \
+            -Dsonar.java.binaries=${{ sonarcloud_java_binaries }} \
+            -Dsonar.tests=${{ sonarcloud_tests }}
 
