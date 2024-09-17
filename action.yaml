@@ -87,5 +87,3 @@ runs:
             -Dsonar.coverage.jacoco.xmlReportPaths=${{ inputs.sonarcloud_coverage_jacoco_xmlReportPaths }} \
             -Dsonar.java.binaries=${{ inputs.sonarcloud_java_binaries }} \
             -Dsonar.tests=${{ inputs.sonarcloud_tests }}
-            -Dsonar.verbose=${{ inputs.sonarcloud_verbose }}
-
