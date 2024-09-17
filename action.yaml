@@ -7,7 +7,31 @@ inputs:
     description: "Current Branch"
     required: true
     default: "main"
-
+  sonarcloud_token:
+       description: "Token For Sonarcloud"
+       required: true
+  sonarcloud_host_url:     
+       description: "Sonarcloud Host URL"
+       required: true
+  sonarcloud_organization:
+       description: "Organization Name on Sonarcloud "
+       required: true
+  sonarcloud_sources:
+       description: "source folder"
+       required: false   
+  sonarcloud_projectKey:
+       description: "Sonar project key"
+       required: true
+  sonarcloud_coverage_jacoco_xmlReportPaths:
+       description: "Jacoco reports path"
+       required: false
+  sonarcloud_java_binaries:
+       description: "Java binaries folder"
+       required: false         
+  sonarcloud_tests:
+       description: "Java test folder"
+       required: false   
+       
 runs:
   using: "composite" 
   steps:
@@ -42,4 +66,22 @@ runs:
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
             -Denforcer.skip=true \
             -PcodeQuality
-
+            
+    - name: SonarCloud Build and analyze
+      # if: github.repository_owner == 'ikmdev'
+      shell: bash 
+      env:
+          SONAR_TOKEN: ${{ inputs.sonarcloud_token }}
+          SONAR_HOST_URL: ${{ inputs.sonarcloud_host_url }}
+          SONAR_ORGANIZATION: ${{ inputs.sonarcloud_organization }}  
+      run: | 
+          ./mvnw verify sonar:sonar \
+            --batch-mode \
+            -Dsonar.sonarcloud_token=${{ inputs.sonarcloud_token }} \
+            -Dsonar.organization=${{ inputs.sonarcloud_organization }} \
+            -Dsonar.sonarcloud_host_url=${{ inputs.sonarcloud_host_url }} \
+            -Dsonar.sources=${{ inputs.sonarcloud_sources }} \
+            -Dsonar.projectKey=${{ inputs.sonarcloud_projectKey }} \
+            -Dsonar.coverage.jacoco.xmlReportPaths=${{ inputs.sonarcloud_coverage_jacoco_xmlReportPaths }} \
+            -Dsonar.java.binaries=${{ inputs.sonarcloud_java_binaries }} \
+            -Dsonar.tests=${{ inputs.sonarcloud_tests }}
