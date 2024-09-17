@@ -9,19 +9,19 @@ inputs:
     default: "main"
   sonarcloud_token:
        description: "Token For Sonarcloud"
-       required: true
+       required: false
   sonarcloud_host_url:     
        description: "Sonarcloud Host URL"
-       required: true
+       required: false
   sonarcloud_organization:
        description: "Organization Name on Sonarcloud "
-       required: true
+       required: false
   sonarcloud_sources:
        description: "source folder"
        required: false   
   sonarcloud_projectKey:
        description: "Sonar project key"
-       required: true
+       required: false
   sonarcloud_coverage_jacoco_xmlReportPaths:
        description: "Jacoco reports path"
        required: false
