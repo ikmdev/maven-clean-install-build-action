@@ -27,13 +27,11 @@ inputs:
        required: false
   sonarcloud_java_binaries:
        description: "Java binaries folder"
-       required: true         
+       required: false         
   sonarcloud_tests:
        description: "Java test folder"
        required: false   
-  sonarcloud_verbose:
-       description: "Java test folder"
-       required: false          
+       
 runs:
   using: "composite" 
   steps:
