@@ -68,7 +68,7 @@ runs:
             -PcodeQuality
             
     - name: SonarCloud Build and analyze
-      # if: github.repository_owner == 'ikmdev'
+      if: github.repository_owner == 'ikmdev'
       shell: bash 
       env:
           SONAR_TOKEN: ${{ inputs.sonarcloud_token }}
