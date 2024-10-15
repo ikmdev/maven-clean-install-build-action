@@ -9,7 +9,7 @@ inputs:
     default: "main"
   repo_name:
     description: "Repo Name"
-    required: true
+    required: false
   sonarcloud_token:
        description: "Token For Sonarcloud"
        required: false
