@@ -7,6 +7,9 @@ inputs:
     description: "Current Branch"
     required: true
     default: "main"
+  repo_name:
+    description: "Repo Name"
+    required: true
   sonarcloud_token:
        description: "Token For Sonarcloud"
        required: false
@@ -39,6 +42,9 @@ runs:
   steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
+      with:
+        repository: ${{inputs.repo_name}}
+        ref: ${{inputs.branch_name}}
 
     - name: Cache Maven packages
       uses: actions/cache@v3
