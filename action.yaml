@@ -46,7 +46,7 @@ runs:
         restore-keys: ${{ runner.os }}-maven-
 
     - name: Maven Build
-      if: inputs.branch_name == 'main' || inputs.branch_name == 'master'
+      if: github.event.repository.name != 'reasoner-test-data' && (inputs.branch_name == 'main' || inputs.branch_name == 'master')
       shell: bash
       run: |
           ./mvnw clean install -U \
@@ -57,7 +57,7 @@ runs:
             -PcodeQuality
 
     - name: Maven Build -- Feature Branch
-      if: inputs.branch_name != 'main' && inputs.branch_name != 'master'
+      if: github.event.repository.name == 'reasoner-test-data' || (inputs.branch_name != 'main' && inputs.branch_name != 'master')
       shell: bash
       run: |
           ./mvnw clean install -U \
@@ -68,20 +68,20 @@ runs:
             -PcodeQuality
             
     - name: SonarCloud Build and analyze
-      # if: github.repository_owner == 'ikmdev'
+      if: github.repository_owner == 'ikmdev' && github.event_name != 'pull_request'
       shell: bash 
       env:
-          SONAR_TOKEN: ${{ inputs.sonarcloud_token }}
-          SONAR_HOST_URL: ${{ inputs.sonarcloud_host_url }}
-          SONAR_ORGANIZATION: ${{ inputs.sonarcloud_organization }}  
+        SONAR_TOKEN: ${{ inputs.sonarcloud_token }}
+        SONAR_HOST_URL: ${{ inputs.sonarcloud_host_url }}
+        SONAR_ORGANIZATION: ${{ inputs.sonarcloud_organization }}  
       run: | 
-          ./mvnw verify sonar:sonar \
-            --batch-mode \
-            -Dsonar.sonarcloud_token=${{ inputs.sonarcloud_token }} \
-            -Dsonar.organization=${{ inputs.sonarcloud_organization }} \
-            -Dsonar.sonarcloud_host_url=${{ inputs.sonarcloud_host_url }} \
-            -Dsonar.sources=${{ inputs.sonarcloud_sources }} \
-            -Dsonar.projectKey=${{ inputs.sonarcloud_projectKey }} \
-            -Dsonar.coverage.jacoco.xmlReportPaths=${{ inputs.sonarcloud_coverage_jacoco_xmlReportPaths }} \
-            -Dsonar.java.binaries=${{ inputs.sonarcloud_java_binaries }} \
-            -Dsonar.tests=${{ inputs.sonarcloud_tests }}
+           ./mvnw verify sonar:sonar \
+             --batch-mode \
+             -Dsonar.sonarcloud_token=${{ inputs.sonarcloud_token }} \
+             -Dsonar.organization=${{ inputs.sonarcloud_organization }} \
+             -Dsonar.sonarcloud_host_url=${{ inputs.sonarcloud_host_url }} \
+             -Dsonar.sources=${{ inputs.sonarcloud_sources }} \
+             -Dsonar.projectKey=${{ inputs.sonarcloud_projectKey }} \
+             -Dsonar.coverage.jacoco.xmlReportPaths=${{ inputs.sonarcloud_coverage_jacoco_xmlReportPaths }} \
+             -Dsonar.java.binaries=${{ inputs.sonarcloud_java_binaries }} \
+             -Dsonar.tests=${{ inputs.sonarcloud_tests }}
