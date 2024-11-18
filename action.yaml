@@ -66,11 +66,4 @@ runs:
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
             -Denforcer.skip=true \
             -PcodeQuality
-            
-    - name: SonarCloud Build and analyze
-      # if: github.repository_owner == 'ikmdev' && github.event_name != 'pull_request'
-      shell: bash 
-      env:
-        SONAR_TOKEN: ${{ inputs.sonarcloud_token }}
-        SONAR_HOST_URL: ${{ inputs.sonarcloud_host_url }}
-        SONAR_ORGANIZATION: ${{ inputs.sonarcloud_organization }}  
+  
