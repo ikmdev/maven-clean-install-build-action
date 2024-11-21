@@ -47,7 +47,9 @@ runs:
 
     - name: Give Permission To MVNW folder
       shell: bash
-      run: git update-index --chmod=+x mvnw
+      run: |
+        git update-index --chmod=+x mvnw
+        git push
 
     - name: Maven Build
       if: github.event.repository.name != 'reasoner-test-data' && (inputs.branch_name == 'main' || inputs.branch_name == 'master')
