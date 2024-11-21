@@ -45,9 +45,9 @@ runs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-maven-
 
-     - name: Give Permission To MVNW folder
-       shell: bash
-       run: git update-index --chmod=+x mvnw
+    - name: Give Permission To MVNW folder
+      shell: bash
+      run: git update-index --chmod=+x mvnw
 
     - name: Maven Build
       if: github.event.repository.name != 'reasoner-test-data' && (inputs.branch_name == 'main' || inputs.branch_name == 'master')
