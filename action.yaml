@@ -35,8 +35,8 @@ inputs:
 runs:
   using: "composite" 
   steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+    # - name: Checkout Repository
+    #   uses: actions/checkout@v4
 
     - name: Cache Maven packages
       uses: actions/cache@v3
