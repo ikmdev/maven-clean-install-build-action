@@ -52,7 +52,6 @@ runs:
             -e \
             -Dmaven.build.cache.enabled=false \
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
-            -Denforcer.skip=${{steps.verification_step.outputs.ENFORCER_FLAG}} \
             -PcodeQuality
 
     # - name: Maven Build -- Feature Branch
