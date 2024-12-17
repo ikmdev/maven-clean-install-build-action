@@ -21,9 +21,9 @@ runs:
 
 
     - name: Verification Step
-       id: verification_step
-       shell: bash
-       run: |
+      id: verification_step
+      shell: bash
+      run: |
             echo "Is Default Branch: ${{inputs.branch_name}} || $IS_DEFAULT_BRANCH"
             echo "Is Reasoner Test Data Repo: ${{github.event.repository.name}} || $IS_REASONER_TEST_DATA_REPO"
             echo "Is Pull Request Event: ${{github.event_name}} || $IS_PULL_REQUEST_EVENT"
@@ -38,7 +38,7 @@ runs:
              echo "ERROR!"
              exit 1
             fi
-       env:
+      env:
          IS_DEFAULT_BRANCH: ${{ inputs.branch_name == 'main' || inputs.branch_name == 'master' }}
          IS_REASONER_TEST_DATA_REPO: ${{ github.event.repository.name == 'reasoner-test-data' }}
          IS_PULL_REQUEST_EVENT: ${{ github.event_name == 'pull_request' }}
