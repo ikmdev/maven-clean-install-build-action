@@ -7,37 +7,11 @@ inputs:
     description: "Current Branch"
     required: true
     default: "main"
-  sonarcloud_token:
-       description: "Token For Sonarcloud"
-       required: false
-  sonarcloud_host_url:     
-       description: "Sonarcloud Host URL"
-       required: false
-  sonarcloud_organization:
-       description: "Organization Name on Sonarcloud "
-       required: false
-  sonarcloud_sources:
-       description: "source folder"
-       required: false   
-  sonarcloud_projectKey:
-       description: "Sonar project key"
-       required: false
-  sonarcloud_coverage_jacoco_xmlReportPaths:
-       description: "Jacoco reports path"
-       required: false
-  sonarcloud_java_binaries:
-       description: "Java binaries folder"
-       required: false         
-  sonarcloud_tests:
-       description: "Java test folder"
-       required: false   
+ 
        
 runs:
   using: "composite" 
   steps:
-    # - name: Checkout Repository
-    #   uses: actions/checkout@v4
-
     - name: Cache Maven packages
       uses: actions/cache@v3
       with:
@@ -45,8 +19,32 @@ runs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-maven-
 
+
+    - name: Verification Step
+       id: verification_step
+       shell: bash
+       run: |
+            echo "Is Default Branch: ${{inputs.branch_name}} || $IS_DEFAULT_BRANCH"
+            echo "Is Reasoner Test Data Repo: ${{github.event.repository.name}} || $IS_REASONER_TEST_DATA_REPO"
+            echo "Is Pull Request Event: ${{github.event_name}} || $IS_PULL_REQUEST_EVENT"
+            
+            if [ $IS_PULL_REQUEST_EVENT == 'true' ]; then
+             echo "ENFORCER_FLAG=true">> $GITHUB_OUTPUT
+            elif [ $IS_DEFAULT_BRANCH == 'true' ]; then
+             echo "ENFORCER_FLAG=true">> $GITHUB_OUTPUT
+            elif [ $IS_DEFAULT_BRANCH == 'false' ]; then
+             echo "ENFORCER_FLAG=false">> $GITHUB_OUTPUT
+            else
+             echo "ERROR!"
+             exit 1
+            fi
+       env:
+         IS_DEFAULT_BRANCH: ${{ inputs.branch_name == 'main' || inputs.branch_name == 'master' }}
+         IS_REASONER_TEST_DATA_REPO: ${{ github.event.repository.name == 'reasoner-test-data' }}
+         IS_PULL_REQUEST_EVENT: ${{ github.event_name == 'pull_request' }}
+
     - name: Maven Build
-      if: github.event.repository.name != 'reasoner-test-data' && (inputs.branch_name == 'main' || inputs.branch_name == 'master')
+      # if: github.event.repository.name != 'reasoner-test-data' && (inputs.branch_name == 'main' || inputs.branch_name == 'master')
       shell: bash
       run: |
           ./mvnw clean install -U \
@@ -54,16 +52,17 @@ runs:
             -e \
             -Dmaven.build.cache.enabled=false \
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
+            -Denforcer.skip=${{steps.verification_step.outputs.ENFORCER_FLAG}} \
             -PcodeQuality
 
-    - name: Maven Build -- Feature Branch
-      if: github.event.repository.name == 'reasoner-test-data' || (inputs.branch_name != 'main' && inputs.branch_name != 'master')
-      shell: bash
-      run: |
-          ./mvnw clean install -U \
-            --batch-mode \
-            -e \
-            -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
-            -Denforcer.skip=true \
-            -PcodeQuality
+    # - name: Maven Build -- Feature Branch
+    #   if: github.event.repository.name == 'reasoner-test-data' || (inputs.branch_name != 'main' && inputs.branch_name != 'master')
+    #   shell: bash
+    #   run: |
+    #       ./mvnw clean install -U \
+    #         --batch-mode \
+    #         -e \
+    #         -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
+    #         -Denforcer.skip=true \
+    #         -PcodeQuality
   
