@@ -29,11 +29,11 @@ runs:
             echo "Is Pull Request Event: ${{github.event_name}} || $IS_PULL_REQUEST_EVENT"
             
             if [ $IS_PULL_REQUEST_EVENT == 'true' ]; then
-             echo "ENFORCER_FLAG=true">> $GITHUB_OUTPUT
-            elif [ $IS_DEFAULT_BRANCH == 'true' ]; then
-             echo "ENFORCER_FLAG=true">> $GITHUB_OUTPUT
-            elif [ $IS_DEFAULT_BRANCH == 'false' ]; then
              echo "ENFORCER_FLAG=false">> $GITHUB_OUTPUT
+            elif [ $IS_DEFAULT_BRANCH == 'true' ]; then
+             echo "ENFORCER_FLAG=false">> $GITHUB_OUTPUT
+            elif [ $IS_DEFAULT_BRANCH == 'false' ]; then
+             echo "ENFORCER_FLAG=true">> $GITHUB_OUTPUT
             else
              echo "ERROR!"
              exit 1
