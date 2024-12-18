@@ -6,31 +6,7 @@ inputs:
   branch_name: 
     description: "Current Branch"
     required: true
-    default: "main"
-  sonarcloud_token:
-       description: "Token For Sonarcloud"
-       required: false
-  sonarcloud_host_url:     
-       description: "Sonarcloud Host URL"
-       required: false
-  sonarcloud_organization:
-       description: "Organization Name on Sonarcloud "
-       required: false
-  sonarcloud_sources:
-       description: "source folder"
-       required: false   
-  sonarcloud_projectKey:
-       description: "Sonar project key"
-       required: false
-  sonarcloud_coverage_jacoco_xmlReportPaths:
-       description: "Jacoco reports path"
-       required: false
-  sonarcloud_java_binaries:
-       description: "Java binaries folder"
-       required: false         
-  sonarcloud_tests:
-       description: "Java test folder"
-       required: false   
+  
        
 runs:
   using: "composite" 
@@ -43,7 +19,7 @@ runs:
         restore-keys: ${{ runner.os }}-maven-
 
     - name: Maven Build
-      if: github.event.repository.name != 'reasoner-test-data' && (inputs.branch_name == 'main' || inputs.branch_name == 'master')
+      if: github.event.repository.name != 'reasoner-test-data' && inputs.branch_name == github.event.repository.default_branch
       shell: bash
       run: |
           ./mvnw clean install -U \
@@ -54,7 +30,7 @@ runs:
             -PcodeQuality
 
     - name: Maven Build -- Feature Branch
-      if: github.event.repository.name == 'reasoner-test-data' || (inputs.branch_name != 'main' && inputs.branch_name != 'master')
+      if: github.event.repository.name == 'reasoner-test-data' || inputs.branch_name != github.event.repository.default_branch
       shell: bash
       run: |
           ./mvnw clean install -U \
