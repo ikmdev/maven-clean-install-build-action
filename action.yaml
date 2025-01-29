@@ -15,10 +15,10 @@ runs:
   using: "composite" 
   steps:
     - name: Setup Java
-       uses: actions/setup-java@v4
-       with:
-            distribution: 'zulu'
-            java-version: ${{inputs.java_version}}
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: ${{inputs.java_version}}
 
     - name: Cache Maven packages
       uses: actions/cache@v3
