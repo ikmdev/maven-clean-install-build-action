@@ -20,15 +20,18 @@ runs:
   using: "composite" 
   steps:
     - name: Check Input
-      run: echo "Do setup: {{inputs.perform_setup}}"
+      run: |
+        echo "Do setup: {{inputs.perform_setup}}"
 
     - name: Check Input True
       if: inputs.perform_setup
-      run: echo "Condition was TRUE"
+      run: |
+        echo "Condition was TRUE"
 
     - name: Check Input False
       if: ${{ ! inputs.perform_setup }}
-      run: echo "Condition was FALSE"
+      run: |
+        echo "Condition was FALSE"
 
     - name: Checkout Repository
       if: inputs.perform_setup
