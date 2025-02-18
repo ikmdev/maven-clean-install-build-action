@@ -6,6 +6,10 @@ inputs:
   branch_name: 
     description: "Current Branch"
     required: true
+  skip_setup:
+    description: "Skip Setup"
+    required: false
+    default: false
   java_version:
     description: "Java Version"
     required: false 
@@ -14,16 +18,36 @@ inputs:
 runs:
   using: "composite" 
   steps:
+    - name: Check Input
+      shell: bash
+      run: |
+        echo "Skip setup: ${{ inputs.skip_setup }}"
+
+    - name: Skip Setup
+      if: ${{ inputs.skip_setup == 'true' || inputs.skip_setup == 'yes' }}
+      shell: bash
+      run: |
+        echo "Skip the setup"
+
+    - name: Do Setup
+      if: ${{ inputs.skip_setup != 'true' && inputs.skip_setup != 'yes' }}
+      shell: bash
+      run: |
+        echo "Do the setup"
+
     - name: Checkout Repository
+      if: ${{ inputs.skip_setup != 'true' && inputs.skip_setup != 'yes' }}
       uses: actions/checkout@v4
 
     - name: Setup Java
+      if: ${{ inputs.skip_setup != 'true' && inputs.skip_setup != 'yes' }}
       uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
         java-version: ${{inputs.java_version}}
 
     - name: Cache Maven packages
+      if: ${{ inputs.skip_setup != 'true' && inputs.skip_setup != 'yes' }}
       uses: actions/cache@v3
       with:
         path: ~/.m2/repository
