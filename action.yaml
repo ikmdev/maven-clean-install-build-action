@@ -9,12 +9,14 @@ inputs:
   skip_setup:
     description: "Skip Setup"
     required: false
-    type: boolean
     default: false
   java_version:
     description: "Java Version"
     required: false 
     default: "23"
+
+env:
+  DO_SETUP: ${{ inputs.skip_setup != 'true' && inputs.skip_setup != 'yes' }}
     
 runs:
   using: "composite" 
@@ -22,33 +24,33 @@ runs:
     - name: Check Input
       shell: bash
       run: |
-        echo "Skip setup: ${{inputs.skip_setup}}"
+        echo "Skip setup: ${DO_SETUP}"
 
     - name: Check Input True
-      if: inputs.skip_setup
+      if: env.DO_SETUP
       shell: bash
       run: |
-        echo "Condition was TRUE - Skip setup"
+        echo "Condition was TRUE - Do setup"
 
     - name: Check Input False
-      if: ${{ ! inputs.skip_setup }}
+      if: ${{ ! env.DO_SETUP }}
       shell: bash
       run: |
-        echo "Condition was FALSE - Do not skip setup"
+        echo "Condition was FALSE - Do not setup"
 
     - name: Checkout Repository
-      if: ${{ ! inputs.skip_setup }}
+      if: env.DO_SETUP
       uses: actions/checkout@v4
 
     - name: Setup Java
-      if: ${{ ! inputs.skip_setup }}
+      if: env.DO_SETUP
       uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
         java-version: ${{inputs.java_version}}
 
     - name: Cache Maven packages
-      if: ${{ ! inputs.skip_setup }}
+      if: env.DO_SETUP
       uses: actions/cache@v3
       with:
         path: ~/.m2/repository
