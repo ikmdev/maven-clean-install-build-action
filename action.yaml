@@ -20,16 +20,19 @@ runs:
   using: "composite" 
   steps:
     - name: Check Input
+      shell: bash
       run: |
         echo "Do setup: {{inputs.perform_setup}}"
 
     - name: Check Input True
       if: inputs.perform_setup
+      shell: bash
       run: |
         echo "Condition was TRUE"
 
     - name: Check Input False
       if: ${{ ! inputs.perform_setup }}
+      shell: bash
       run: |
         echo "Condition was FALSE"
 
