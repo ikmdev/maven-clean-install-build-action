@@ -22,7 +22,7 @@ runs:
     - name: Check Input
       shell: bash
       run: |
-        echo "Do setup: {{inputs.perform_setup}}"
+        echo "Do setup: ${{inputs.perform_setup}}"
 
     - name: Check Input True
       if: inputs.perform_setup
