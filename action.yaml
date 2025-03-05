@@ -14,6 +14,10 @@ inputs:
     description: "Java Version"
     required: false 
     default: "23"
+  mvn_additional_args:
+    description: "Additional Maven CLI args (no new lines)"
+    required: false
+    default: ""
     
 runs:
   using: "composite" 
@@ -47,7 +51,8 @@ runs:
             -Dmaven.build.cache.enabled=false \
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
             -PcodeQuality \
-            -PgenerateData
+            -PgenerateData \
+            ${{ inputs.mvn_additional_args }}
 
     - name: Maven Build -- Feature Branch
       if: github.event.repository.name == 'reasoner-test-data' || inputs.branch_name != github.event.repository.default_branch
@@ -59,5 +64,6 @@ runs:
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
             -Denforcer.skip=true \
             -PcodeQuality \
-            -PgenerateData
+            -PgenerateData \
+            ${{ inputs.mvn_additional_args }}
   
