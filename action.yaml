@@ -46,7 +46,8 @@ runs:
             -e \
             -Dmaven.build.cache.enabled=false \
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
-            -PcodeQuality
+            -PcodeQuality \
+            -PgenerateData
 
     - name: Maven Build -- Feature Branch
       if: github.event.repository.name == 'reasoner-test-data' || inputs.branch_name != github.event.repository.default_branch
