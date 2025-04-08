@@ -10,6 +10,10 @@ inputs:
     description: "Skip Setup"
     required: false
     default: false
+  working_directory:
+    description: "Working Directory"
+    required: false
+    default: "."
   java_version:
     description: "Java Version"
     required: false 
@@ -53,6 +57,7 @@ runs:
             -PcodeQuality \
             -PgenerateData \
             ${{ inputs.mvn_additional_args }}
+      working-directory: ${{inputs.working_directory}}
 
     - name: Maven Build -- Feature Branch
       if: github.event.repository.name == 'reasoner-test-data' || inputs.branch_name != github.event.repository.default_branch
@@ -66,4 +71,5 @@ runs:
             -PcodeQuality \
             -PgenerateData \
             ${{ inputs.mvn_additional_args }}
+      working-directory: ${{inputs.working_directory}}
   
