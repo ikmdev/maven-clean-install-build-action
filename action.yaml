@@ -14,10 +14,14 @@ inputs:
     description: "Working Directory"
     required: false
     default: "."
+  java_distribution:
+    description: "Java Distribution"
+    required: false
+    default: "zulu"
   java_version:
     description: "Java Version"
     required: false 
-    default: "23"
+    default: "24.01"
   mvn_additional_args:
     description: "Additional Maven CLI args (no new lines)"
     required: false
@@ -34,7 +38,7 @@ runs:
       if: ${{ inputs.skip_setup != 'true' && inputs.skip_setup != 'yes' }}
       uses: actions/setup-java@v4
       with:
-        distribution: 'zulu'
+        distribution: ${{inputs.java_distribution}}
         java-version: ${{inputs.java_version}}
 
     - name: Cache Maven packages
