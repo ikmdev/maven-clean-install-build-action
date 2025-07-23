@@ -9,7 +9,7 @@ inputs:
   skip_setup:
     description: "Skip Setup"
     required: false
-    default: false
+    default: "false"
   working_directory:
     description: "Working Directory"
     required: false
